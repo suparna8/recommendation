@@ -55,7 +55,17 @@ class Recommend:
         self.user_final_rating = np.multiply(user_predicted_ratings,dummy_train)
     
 
-    def recommend(self, user_name):
-        result =  self.user_final_rating.loc[user_name].sort_values(ascending=False)[0:5]
-        print (result)
-        return result
+def recommend(self, user_name):
+        result = self.user_final_rating.loc[user_name].sort_values(ascending=False)[0:20]
+        model = pickle.load("model.pkl", "rw")
+        vectorizer = pickle.load("vectorizer.pkl", "rw")
+        final_recommendations = []
+        for item in result :
+        reviews = self.df[self.df["name"] == item]
+        final_review = ""
+        for review in reviews:
+        final_review = final_review + " " +reviews
+        feature_Vector = vectorizer.transform(final_review)
+        if(model.predict(feature_Vector)):
+        final_recommendations.push(item);
+        return jsonify ({final_recommendations})
