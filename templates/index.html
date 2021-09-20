@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Sentiment Based Recommendation System</h1>
+        <h3>Suparna banergee</h3>
+    </div>
+    <div class="container">
+        <div class="search">
+            <span>
+                <input type="text" id="myinput"/>
+            </span>
+            <span>
+                <button class="btn" type="submit" value="" id ="mybutton">Get Recommendations</button>
+            </span>
+        </div>
+        <hr/>
+        <div class="result-container" id="search-container">
+            <ul id="my_li">
+            </ul>
+            <script type="text/javascript">
+                console.log("js called")
+                window.onload = function() {
+                    var btn = document.getElementById("mybutton");
+                    if (btn.addEventListener) {
+                        btn.addEventListener("click", btnClick, false);
+                    } else if (btn.attachEvent) {
+                        btn.attachEvent("onclick", btnClick);
+                    }
+                };
+
+                function btnClick() {
+                    ul_element = document.getElementById("my_li")
+                    name = document.getElementById("myinput").value
+                    url = 'http://127.0.0.1:5000/recommend/' + name
+                    fetch(url)
+                        .then((response) => response.json())
+                        .then((value) => {
+                            console.log(value); // "Success"
+                            console.log(value.recommendations)
+                            if (value.recommendations.length != 0) {
+                                value.recommendations.forEach(element => {
+                                    console.log(element[0])
+                                    li_element = document.createElement('li')
+                                    li_element.innerHTML = element[0]
+                                    ul_element.appendChild(li_element)
+                                });
+                                document.getElementById('search-container').appendChild(ul_element)
+                            }
+                        });
+
+                }
+            </script>
+</body>
+
+</html>
